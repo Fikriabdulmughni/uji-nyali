@@ -40,6 +40,17 @@ jobs:
             -keyalg RSA -keysize 2048 -validity 10000 \
             -dname "CN=Android Debug,O=Android,C=US"
 
+      - name: Ambil godot-lib dari android_source
+        run: |
+          set -e
+          TPL_DIR="$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+          mkdir -p "$HOME/src"
+          unzip -q "$TPL_DIR/android_source.zip" -d "$HOME/src"
+          mkdir -p android/build/libs/debug android/build/libs/release
+          find "$HOME/src" -name "godot-lib.template_debug.aar" -exec cp {} android/build/libs/debug/ \;
+          find "$HOME/src" -name "godot-lib.template_release.aar" -exec cp {} android/build/libs/release/ \;
+          ls -la android/build/libs/debug android/build/libs/release
+
       - name: Import dan export APK
         env:
           GODOT_ANDROID_KEYSTORE_DEBUG_PATH: ${{ github.workspace }}/debug.keystore
