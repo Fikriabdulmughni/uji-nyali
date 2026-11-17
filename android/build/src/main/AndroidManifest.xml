@@ -16,6 +16,7 @@
         android:required="true" />
 
     <application
+        <meta-data android:name="org.godotengine.plugin.v2.MocapPlugin" android:value="com.namakamu.mocap.MocapPlugin" />
         android:label="@string/godot_project_name_string"
         android:allowBackup="false"
         android:icon="@mipmap/icon"
