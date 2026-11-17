@@ -1,6 +1,7 @@
 extends Node
 
 const SAVE_NAME := "rekaman_mocap.json"
+const PLUGIN_NAME := "MocapPlugin"
 
 var plugin
 var frames: Array = []
@@ -13,16 +14,18 @@ func _ready() -> void:
 
 	label = Label.new()
 	label.position = Vector2(20, 20)
-	label.add_theme_font_size_override("font_size", 36)
+	label.custom_minimum_size = Vector2(1000, 0)
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.add_theme_font_size_override("font_size", 32)
 	layer.add_child(label)
 
-	if Engine.has_singleton("MocapPlugin"):
-		plugin = Engine.get_singleton("MocapPlugin")
+	if Engine.has_singleton(PLUGIN_NAME):
+		plugin = Engine.get_singleton(PLUGIN_NAME)
 		plugin.connect("pose_frame", Callable(self, "_on_pose_frame"))
 		plugin.initPose()
 		_set_status("Sentuh layar untuk mulai merekam")
 	else:
-		_set_status("PLUGIN TIDAK DITEMUKAN\n" + str(Engine.get_singleton_list()))
+		_set_status("PLUGIN TIDAK DITEMUKAN\nSingleton terdaftar:\n" + ", ".join(Engine.get_singleton_list()))
 
 func _input(event: InputEvent) -> void:
 	if plugin == null:
@@ -46,15 +49,23 @@ func selesai_rekam() -> void:
 	_set_status("Selesai: %d frame\nTersimpan di:\n%s" % [frames.size(), path])
 
 func _simpan() -> String:
+	var path := ""
 	var dl := OS.get_system_dir(OS.SYSTEM_DIR_DOWNLOADS)
-	var path := dl.path_join(SAVE_NAME) if dl != "" else "user://" + SAVE_NAME
-	var f := FileAccess.open(path, FileAccess.WRITE)
+	if dl != "":
+		path = dl.path_join(SAVE_NAME)
+
+	var f: FileAccess = null
+	if path != "":
+		f = FileAccess.open(path, FileAccess.WRITE)
+
+	# Android versi baru bisa menolak tulis ke Download, jadi pakai folder aplikasi sebagai cadangan
 	if f == null:
-		# Android versi baru bisa menolak tulis ke Download, jadi simpan di folder aplikasi
 		path = "user://" + SAVE_NAME
 		f = FileAccess.open(path, FileAccess.WRITE)
+
 	if f == null:
 		return "GAGAL MENYIMPAN"
+
 	f.store_string(JSON.stringify(frames))
 	f.close()
 	return path
