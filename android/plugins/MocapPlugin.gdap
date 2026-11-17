@@ -1,0 +1,11 @@
+[config]
+name="MocapPlugin"
+binary_type="local"
+binary="MocapPlugin.aar"
+
+[dependencies]
+local=[]
+remote=[]
+
+[permissions]
+camera
