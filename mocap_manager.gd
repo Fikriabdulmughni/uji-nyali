@@ -22,7 +22,7 @@ func _ready() -> void:
 		plugin.initPose()
 		_set_status("Sentuh layar untuk mulai merekam")
 	else:
-		_set_status("PLUGIN TIDAK DITEMUKAN")
+		_set_status("PLUGIN TIDAK DITEMUKAN\n" + str(Engine.get_singleton_list()))
 
 func _input(event: InputEvent) -> void:
 	if plugin == null:
