@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://37o0rhtke2wq"]
+
+[ext_resource type="Script" uid="uid://dw88v3wo4li0c" path="res://mocap_scene.gd" id="1_mocap"]
+
+[node name="MocapScene" type="Node" unique_id=204574088]
+script = ExtResource("1_mocap")

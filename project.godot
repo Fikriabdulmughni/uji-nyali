@@ -11,13 +11,9 @@ config_version=5
 [application]
 
 config/name="Uji Nyali"
-run/main_scene="uid://dhg78fdrldptl"
+run/main_scene="res://mocap_scene.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
-
-[autoload]
-
-MocapPlugin="*uid://ebjyphhk33yj"
 
 [display]
 
